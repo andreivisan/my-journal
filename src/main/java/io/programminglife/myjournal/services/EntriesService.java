@@ -18,12 +18,10 @@ public class EntriesService {
 
     public void insertEntry(Entry entries) {
         dslContext.insertInto(Tables.ENTRY,
-                Tables.ENTRY.ID,
                 Tables.ENTRY.CREATED_ON,
                 Tables.ENTRY.BODY,
                 Tables.ENTRY.STATUS)
                 .values(
-                        entries.getId(),
                         LocalDateTime.now(),
                         entries.getBody(),
                         entries.getStatus()
