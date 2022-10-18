@@ -73,8 +73,8 @@
 							<jdbc>
 								<driver>org.postgresql.Driver</driver>
 								<url>jdbc:postgresql://localhost:5432/my_journal</url>
-								<user></user>
-								<password></password>
+								<user>${env.MY_JOURNAL_DB_USERNAME}</user>
+								<password>${env.MY_JOURNAL_DB_PASSWORD}</password>
 							</jdbc>
 							<generator>
 								<database>
