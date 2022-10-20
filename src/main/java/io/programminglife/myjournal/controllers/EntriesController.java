@@ -22,7 +22,7 @@ public class EntriesController {
     }
 
     @GetMapping
-    public List<Entry> getBooks() {
+    public List<Entry> getEntries() {
         return entriesService.getEntries();
     }
 

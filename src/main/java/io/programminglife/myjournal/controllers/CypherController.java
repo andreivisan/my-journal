@@ -1,21 +1,32 @@
 package io.programminglife.myjournal.controllers;
 
 import io.programminglife.myjournal.services.CypherService;
+import jakarta.annotation.PostConstruct;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
+import javax.crypto.BadPaddingException;
+import javax.crypto.IllegalBlockSizeException;
+import javax.crypto.NoSuchPaddingException;
+import javax.crypto.spec.IvParameterSpec;
+import java.security.InvalidAlgorithmParameterException;
+import java.security.InvalidKeyException;
 import java.security.Key;
 import java.security.NoSuchAlgorithmException;
 
 @RestController
-@RequestMapping("/cypher/")
+@RequestMapping("/cypher")
 public class CypherController {
 
     @Autowired
     CypherService cypherService;
 
+    private static IvParameterSpec ivParameterSpec;
+
+    @PostConstruct
+    public void init() {
+        ivParameterSpec = cypherService.generateIv();
+    }
 
     @GetMapping("/unique-key/")
     public String getUniqueKey() {
@@ -24,6 +35,29 @@ public class CypherController {
             return cypherService.getEncodedKey(decodedKey);
         } catch (NoSuchAlgorithmException e) {
             return "Failure";
+        }
+    }
+    @PostMapping("/encrypt/{key}/")
+    public String encryptedEntryBody(@PathVariable String key, @RequestBody String entryBody) {
+        Key decodedKey = cypherService.getDecodedKey(key);
+
+        try {
+            return cypherService.encrypt(entryBody, decodedKey, ivParameterSpec);
+        } catch (NoSuchPaddingException | IllegalBlockSizeException | BadPaddingException | InvalidKeyException |
+                 InvalidAlgorithmParameterException | NoSuchAlgorithmException e) {
+            return "Error";
+        }
+    }
+
+    @PostMapping("/decrypt/{key}/")
+    public String decryptedEntryBody(@PathVariable String key, @RequestBody String encryptedEntryBody) {
+        Key decodedKey = cypherService.getDecodedKey(key);
+
+        try {
+            return cypherService.decrypt(encryptedEntryBody, decodedKey, ivParameterSpec);
+        } catch (NoSuchPaddingException | IllegalBlockSizeException | BadPaddingException | InvalidKeyException |
+                 InvalidAlgorithmParameterException | NoSuchAlgorithmException e) {
+            return "Error";
         }
     }
 
