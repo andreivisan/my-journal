@@ -8,7 +8,6 @@ import org.springframework.web.bind.annotation.RestController;
 
 import java.security.Key;
 import java.security.NoSuchAlgorithmException;
-import java.util.Base64;
 
 @RestController
 @RequestMapping("/cypher/")
@@ -21,10 +20,8 @@ public class CypherController {
     @GetMapping("/unique-key/")
     public String getUniqueKey() {
         try {
-            Key secretKey = cypherService.getKeyFromKeyGenerator(128);
-            byte[] rawData = secretKey.getEncoded();
-            String encodedKey = Base64.getEncoder().encodeToString(rawData);
-            return encodedKey;
+            Key decodedKey = cypherService.getKeyFromKeyGenerator(128);
+            return cypherService.getEncodedKey(decodedKey);
         } catch (NoSuchAlgorithmException e) {
             return "Failure";
         }
