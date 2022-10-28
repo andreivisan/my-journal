@@ -17,6 +17,7 @@ import java.security.InvalidKeyException;
 import java.security.Key;
 import java.security.NoSuchAlgorithmException;
 import java.util.List;
+import java.util.Optional;
 
 @RestController
 @RequestMapping("/entries")
@@ -53,6 +54,15 @@ public class EntriesController {
     @GetMapping
     public List<Entry> getEntries() {
         return entriesService.getEntries();
+    }
+
+    @GetMapping("/{id}/")
+    public ResponseEntity<Entry> getEntryById(@PathVariable int id) {
+        Optional<Entry> entry = entriesService.getEntryById(id);
+        return entry.map(value -> ResponseEntity.ok().body(
+                value
+        )).orElseGet(() -> ResponseEntity.notFound().build());
+
     }
 
 }
