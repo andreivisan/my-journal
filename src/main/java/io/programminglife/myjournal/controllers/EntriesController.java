@@ -51,6 +51,7 @@ public class EntriesController {
         return ResponseEntity.ok().build();
     }
 
+    //TODO: Refactor the return to be a @ResponseEntity
     @GetMapping
     public List<Entry> getEntries() {
         return entriesService.getEntries();
