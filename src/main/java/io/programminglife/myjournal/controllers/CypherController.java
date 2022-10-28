@@ -37,17 +37,6 @@ public class CypherController {
             return "Failure";
         }
     }
-    @PostMapping("/encrypt/{key}/")
-    public String encryptedEntryBody(@PathVariable String key, @RequestBody String entryBody) {
-        Key decodedKey = cypherService.getDecodedKey(key);
-
-        try {
-            return cypherService.encrypt(entryBody, decodedKey, ivParameterSpec);
-        } catch (NoSuchPaddingException | IllegalBlockSizeException | BadPaddingException | InvalidKeyException |
-                 InvalidAlgorithmParameterException | NoSuchAlgorithmException e) {
-            return "Error";
-        }
-    }
 
     @PostMapping("/decrypt/{key}/")
     public String decryptedEntryBody(@PathVariable String key, @RequestBody String encryptedEntryBody) {
