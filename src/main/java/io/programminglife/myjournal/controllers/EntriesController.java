@@ -75,4 +75,10 @@ public class EntriesController {
         )).orElseGet(() -> ResponseEntity.notFound().build());
     }
 
+    @DeleteMapping("/{id}/")
+    public ResponseEntity<String> deleteEntry(@PathVariable Integer id) {
+        entriesService.deleteEntryById(id);
+        return ResponseEntity.ok().build();
+    }
+
 }

@@ -50,4 +50,10 @@ public class EntriesService {
                         .fetchInto(Entry.class));
     }
 
+    public void deleteEntryById(Integer id) {
+        dslContext.deleteFrom(Tables.ENTRY)
+                .where(Tables.ENTRY.ID.eq(id))
+                .execute();
+    }
+
 }
