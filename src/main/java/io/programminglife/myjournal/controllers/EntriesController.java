@@ -51,10 +51,12 @@ public class EntriesController {
         return ResponseEntity.ok().build();
     }
 
-    //TODO: Refactor the return to be a @ResponseEntity
     @GetMapping
-    public List<Entry> getEntries() {
-        return entriesService.getEntries();
+    public ResponseEntity<List<Entry>> getEntries() {
+        Optional<List<Entry>> entries = entriesService.getEntries();
+        return entries.map(entryList -> ResponseEntity.ok().body(
+                entryList
+        )).orElseGet(() -> ResponseEntity.notFound().build());
     }
 
     @GetMapping("/{id}/")

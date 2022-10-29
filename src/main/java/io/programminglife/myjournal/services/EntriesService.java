@@ -30,9 +30,10 @@ public class EntriesService {
                 .execute();
     }
 
-    public List<Entry> getEntries() {
-        return dslContext.selectFrom(Tables.ENTRY)
-                .fetchInto(Entry.class);
+    public Optional<List<Entry>> getEntries() {
+        return Optional.of(
+                dslContext.selectFrom(Tables.ENTRY)
+                .fetchInto(Entry.class));
     }
 
     public Optional<Entry> getEntryById(Integer id) {
