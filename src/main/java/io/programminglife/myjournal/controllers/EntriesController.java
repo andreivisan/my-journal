@@ -65,7 +65,14 @@ public class EntriesController {
         return entry.map(value -> ResponseEntity.ok().body(
                 value
         )).orElseGet(() -> ResponseEntity.notFound().build());
+    }
 
+    @GetMapping("/status/{status}/")
+    public ResponseEntity<List<Entry>> getEntriesByStatus(@PathVariable String status) {
+        Optional<List<Entry>> entries = entriesService.getEntriesByStatus(status);
+        return entries.map(entryList -> ResponseEntity.ok().body(
+                entryList
+        )).orElseGet(() -> ResponseEntity.notFound().build());
     }
 
 }

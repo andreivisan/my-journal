@@ -43,4 +43,11 @@ public class EntriesService {
                 .fetchOneInto(Entry.class));
     }
 
+    public Optional<List<Entry>> getEntriesByStatus(String status) {
+        return Optional.of(
+                dslContext.selectFrom(Tables.ENTRY)
+                        .where(Tables.ENTRY.STATUS.like(status))
+                        .fetchInto(Entry.class));
+    }
+
 }
