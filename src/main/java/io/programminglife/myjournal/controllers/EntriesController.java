@@ -52,6 +52,7 @@ public class EntriesController {
     }
 
     @GetMapping
+    @CrossOrigin
     public ResponseEntity<List<Entry>> getEntries() {
         Optional<List<Entry>> entries = entriesService.getEntries();
         return entries.map(entryList -> ResponseEntity.ok().body(
