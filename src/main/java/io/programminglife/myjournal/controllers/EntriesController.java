@@ -81,4 +81,22 @@ public class EntriesController {
         return ResponseEntity.ok().build();
     }
 
+    @PutMapping("/{id}/{key}/")
+    public ResponseEntity<String> updateEntry(@PathVariable Integer id,
+                                              @PathVariable String key,
+                                              @RequestBody String body) {
+
+        Key decodedKey = cypherService.getDecodedKey(key);
+
+        try {
+            String encryptedBody = cypherService.encrypt(body, decodedKey, ivParameterSpec);
+            entriesService.updateEntryById(id, encryptedBody);
+        } catch (NoSuchPaddingException | IllegalBlockSizeException | BadPaddingException | InvalidKeyException |
+                 InvalidAlgorithmParameterException | NoSuchAlgorithmException e) {
+            return ResponseEntity.internalServerError().body(e.getMessage());
+        }
+
+        return ResponseEntity.ok().build();
+    }
+
 }

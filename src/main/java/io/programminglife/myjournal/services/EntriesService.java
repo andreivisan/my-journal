@@ -56,4 +56,11 @@ public class EntriesService {
                 .execute();
     }
 
+    public void updateEntryById(Integer id, String body) {
+        dslContext.update(Tables.ENTRY)
+                .set(Tables.ENTRY.BODY, body)
+                .where(Tables.ENTRY.ID.eq(id))
+                .execute();
+    }
+
 }
